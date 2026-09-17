@@ -90,38 +90,4 @@ export async function createDonation(request, env) {
       nickname,
       amountCents,
       originalAmount,
-      originalCurrency,    return fail(ERR.VALIDATION_ERROR, "啷个投的选一个嘛。");
-  }
-  const txid = clean(body.txid, LIMITS.txidMax);
-  const isAnonymous = body.isAnonymous ? 1 : 0;
-
-  // IP 不存明文：投喂记录也只落哈希（莫让别个从库里扒出你的 IP）
-  const { key: ipHash } = await computeDailyKey(ip, env.SERVER_SECRET);
-
-  // 3. 写入 donations（pending，等后台审核）
-  const deleteToken = randomToken();
-  const res = await env.DB.prepare(
-    `INSERT INTO donations
-       (bowl_id, nickname, amount_cents, message, payment_method, txid, is_anonymous, status, ip_hash, delete_token)
-     VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?)`
-  )
-    .bind(bowl.id, nickname, amountCents, message, paymentMethod, txid, isAnonymous, ipHash.slice(0, 32), deleteToken)
-    .run();
-
-  return ok({ id: res.meta.last_row_id, deleteToken }, 201);
-}
-
-// DELETE /api/donation/:id?token=xxx —— 投喂人自己撤（仅 pending 可撤）
-export async function deleteDonation(request, env, id) {
-  const token = new URL(request.url).searchParams.get("token") || "";
-  const row = await env.DB.prepare("SELECT * FROM donations WHERE id = ?").bind(id).first();
-  if (!row) return fail(ERR.NOT_FOUND, "这笔投喂没找到。", 404);
-  if (row.status !== "pending") {
-    return fail(ERR.CONFLICT, "这口饭已经被端走了，撤不脱喽。", 409);
-  }
-  if (!token || token !== row.delete_token) {
-    return fail(ERR.UNAUTHORIZED, "这不是你投的那口。", 401);
-  }
-  await env.DB.prepare("DELETE FROM donations WHERE id = ? AND status = 'pending'").bind(id).run();
-  return ok({ id: Number(id) });
-}
+      originalCurrency,
