@@ -40,10 +40,41 @@ export function formatBowl(row) {
 
 export function formatDonation(row) {
   if (!row) return null;
+
+  const isUsdt =
+    row.payment_method === "usdt" ||
+    row.payment_method === "usdt_bep20";
+
+  // 新记录直接读取原始金额。
+  // 旧人民币记录继续兼容 amount_cents。
+  // 旧 USDT 因历史数据库没有真实U数量，不伪造数值。
+  const originalAmount =
+    row.original_amount != null
+      ? Number(row.original_amount)
+      : isUsdt
+        ? null
+        : row.amount_cents / 100;
+
+  const currency =
+    row.original_currency && row.original_amount != null
+      ? row.original_currency
+      : isUsdt
+        ? "USDT"
+        : "CNY";
+
   return {
     id: row.id,
-    nickname: row.is_anonymous ? "匿名耿直人" : row.nickname || "路过滴耿直人",
-    amountYuan: row.amount_cents / 100,
+    nickname: row.is_anonymous
+      ? "匿名耿直人"
+      : row.nickname || "路过滴耿直人",
+
+    // 保留旧字段，避免其它页面立即失效
+    amountYuan: !isUsdt ? row.amount_cents / 100 : null,
+
+    // 新的双币种字段
+    originalAmount,
+    currency,
+
     message: row.message,
     paymentMethod: row.payment_method,
     txid: row.txid,
@@ -51,4 +82,5 @@ export function formatDonation(row) {
     status: row.status,
     createdAt: row.created_at,
   };
+}
 }
