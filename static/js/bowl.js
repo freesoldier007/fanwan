@@ -35,7 +35,7 @@
 
     return `¥${yuan(amount)}`;
   }
-  const PAY_LABEL = { wechat: "微信", alipay: "支付宝", usdt: "USDT(TRC20)", usdt_bep20: "USDT(BEP20)" };
+  const PAY_LABEL = { wechat: "微信", alipay: "支付宝", usdt: "TRC20", usdt_bep20: "BEP20" };
 
   /* ---------- 加载数据 ---------- */
   async function load() {
