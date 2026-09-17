@@ -209,7 +209,7 @@
       el.innerHTML = `
         <div class="r-avatar">${d.anonymous ? "🙈" : "🍚"}</div>
         <div class="r-main">
-          <div class="r-name">${escapeHtml(d.nickname)}<span class="amt">投了 ¥${yuan(d.amountYuan)}</span>${d.paymentMethod === "usdt" || d.paymentMethod === "usdt_bep20" ? ` <small style='color:var(--muted)'>${PAY_LABEL[d.paymentMethod]}</small>` : ""}</div>
+          <div class="r-name">${escapeHtml(d.nickname)}<span class="amt">投了 投了 ${donationAmount(d)}</span>${d.paymentMethod === "usdt" || d.paymentMethod === "usdt_bep20" ? ` <small style='color:var(--muted)'>${PAY_LABEL[d.paymentMethod]}</small>` : ""}</div>
           ${d.message ? `<div class="r-msg">“${escapeHtml(d.message)}”</div>` : ""}
           <div class="r-time">${fmtTime(d.createdAt)}</div>
         </div>`;
