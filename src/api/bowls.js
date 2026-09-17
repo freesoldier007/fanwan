@@ -390,7 +390,8 @@ export async function approveOwnDonation(request, env, slug) {
        WHERE id = ?`
     ).bind(row.amount_cents, bowl.id).run();
   }
-
+  return ok({ id: row.id });
+}
 // POST /api/bowl/:slug/reject {id, editToken} —— 这个不行
 export async function rejectOwnDonation(request, env, slug) {
   if (!isValidSlug(slug)) return fail(ERR.NOT_FOUND, "这口饭好像没摆在这儿。", 404);
