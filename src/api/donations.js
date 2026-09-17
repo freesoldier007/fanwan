@@ -91,3 +91,62 @@ export async function createDonation(request, env) {
       amountCents,
       originalAmount,
       originalCurrency,
+            message,
+      paymentMethod,
+      txid,
+      isAnonymous,
+      ipHash.slice(0, 32),
+      deleteToken
+    )
+    .run();
+
+  return ok(
+    {
+      id: res.meta.last_row_id,
+      deleteToken,
+      originalAmount,
+      originalCurrency
+    },
+    201
+  );
+}
+
+// DELETE /api/donation/:id?token=xxx
+export async function deleteDonation(request, env, id) {
+  const token =
+    new URL(request.url).searchParams.get("token") || "";
+
+  const row = await env.DB
+    .prepare("SELECT * FROM donations WHERE id = ?")
+    .bind(id)
+    .first();
+
+  if (!row) {
+    return fail(ERR.NOT_FOUND, "这笔投喂没找到。", 404);
+  }
+
+  if (row.status !== "pending") {
+    return fail(
+      ERR.CONFLICT,
+      "这口饭已经被端走了，撤不脱喽。",
+      409
+    );
+  }
+
+  if (!token || token !== row.delete_token) {
+    return fail(
+      ERR.UNAUTHORIZED,
+      "这不是你投的那口。",
+      401
+    );
+  }
+
+  await env.DB
+    .prepare(
+      "DELETE FROM donations WHERE id = ? AND status = 'pending'"
+    )
+    .bind(id)
+    .run();
+
+  return ok({ id: Number(id) });
+}
