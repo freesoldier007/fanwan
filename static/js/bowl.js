@@ -20,7 +20,21 @@
     expired: ["🍚 饭凉了，收碗了", "s-cold"],
     hidden: ["🍚 收摊了", "s-cold"],
   };
+  function donationAmount(d) {
+    if (d.currency === "USDT") {
+      if (d.originalAmount == null) return "历史 USDT";
+      return `${Number(d.originalAmount).toLocaleString("en-US", {
+        maximumFractionDigits: 6
+      })} USDT`;
+    }
 
+    const amount =
+      d.originalAmount != null
+        ? d.originalAmount
+        : d.amountYuan;
+
+    return `¥${yuan(amount)}`;
+  }
   const PAY_LABEL = { wechat: "微信", alipay: "支付宝", usdt: "USDT(TRC20)", usdt_bep20: "USDT(BEP20)" };
 
   /* ---------- 加载数据 ---------- */
