@@ -230,7 +230,7 @@
     top.forEach((d, i) => {
       const el = document.createElement("div");
       el.className = "rank-item";
-      el.innerHTML = `<span>${medals[i]}</span><b>${escapeHtml(d.nickname)}</b><span style="color:var(--gold-deep);">¥${yuan(d.amountYuan)}</span>`;
+      el.innerHTML = `<span>${medals[i]}</span><b>${escapeHtml(d.nickname)}</b><span style="color:var(--gold-deep);">${donationAmount(d)}</span>`;
       rank.appendChild(el);
     });
     if (!top.length) rank.innerHTML = '<p style="color:var(--muted); font-size:14px;">还没得排行，等第一个耿直人。</p>';
