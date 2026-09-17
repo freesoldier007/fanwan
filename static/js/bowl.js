@@ -155,7 +155,7 @@
       el.innerHTML = `
         <div class="r-avatar">🍚</div>
         <div class="r-main">
-          <div class="r-name">${escapeHtml(d.nickname)}<span class="amt" style="color:var(--gold-deep);">投了 ¥${yuan(d.amountYuan)}</span><small style="color:var(--muted);">${PAY_LABEL[d.paymentMethod] || d.paymentMethod}</small></div>
+          <div class="r-name">${escapeHtml(d.nickname)}<span class="amt" style="color:var(--gold-deep);">投了 投了 ${donationAmount(d)}</span><small style="color:var(--muted);">${PAY_LABEL[d.paymentMethod] || d.paymentMethod}</small></div>
           ${d.message ? `<div class="r-msg">“${escapeHtml(d.message)}”</div>` : ""}
           <div class="r-time">${fmtTime(d.createdAt)}${d.txid ? ` · TXID：${escapeHtml(d.txid)}` : ""}</div>
           <div class="pending-actions">
