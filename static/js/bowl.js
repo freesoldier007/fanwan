@@ -217,7 +217,13 @@
     });
 
     // 排行榜：前 3 耿直人
-    const top = [...donations].sort((a, b) => b.amountYuan - a.amountYuan).slice(0, 3);
+    const top = [...donations]
+  .filter((d) => d.currency !== "USDT")
+  .sort((a, b) =>
+    Number(b.originalAmount ?? b.amountYuan ?? 0) -
+    Number(a.originalAmount ?? a.amountYuan ?? 0)
+  )
+  .slice(0, 3);
     const medals = ["🥇 头号耿直人", "🥈 二号耿直人", "🥉 三号耿直人"];
     const rank = $("#rank-list");
     rank.innerHTML = "";
