@@ -380,14 +380,16 @@ export async function approveOwnDonation(request, env, slug) {
      WHERE id=? AND status='pending'`
   ).bind(row.id).run();
 
-  if (res.meta.changes > 0) {
+    if (
+    res.meta.changes > 0 &&
+    row.payment_method !== "usdt" &&
+    row.payment_method !== "usdt_bep20"
+  ) {
     await env.DB.prepare(
       `UPDATE bowls SET current_cents = current_cents + ?
        WHERE id = ?`
     ).bind(row.amount_cents, bowl.id).run();
   }
-  return ok({ id: row.id });
-}
 
 // POST /api/bowl/:slug/reject {id, editToken} —— 这个不行
 export async function rejectOwnDonation(request, env, slug) {
