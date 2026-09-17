@@ -83,4 +83,4 @@ export function formatDonation(row) {
     createdAt: row.created_at,
   };
 }
-}
+
