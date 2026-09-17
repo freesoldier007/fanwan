@@ -21,20 +21,76 @@ export async function createDonation(request, env) {
   if (!body.slug || !isValidSlug(body.slug)) {
     return fail(ERR.VALIDATION_ERROR, "这个饭碗儿好像没摆起。");
   }
+
   const bowl = await getBowlBySlug(env.DB, body.slug);
   if (!bowl) return fail(ERR.NOT_FOUND, "这口饭好像没摆在这儿。", 404);
   if (bowl.status !== "active") {
     return fail(ERR.CONFLICT, "这个饭碗儿已经收摊了，投不得喽。", 409);
   }
 
-  const amountCents = yuanToCents(body.amount);
-  if (amountCents === null) return fail(ERR.VALIDATION_ERROR, "你这个金额有点不对头哈。");
-
-  const message = clean(body.message, LIMITS.messageMax);
-  const nickname = clean(body.nickname, LIMITS.nicknameMax);
   const paymentMethod = body.paymentMethod;
   if (!isValidPaymentMethod(paymentMethod)) {
     return fail(ERR.VALIDATION_ERROR, "啷个投的选一个嘛。");
+  }
+
+  const rawAmount = Number(body.amount);
+  if (!Number.isFinite(rawAmount) || rawAmount <= 0 || rawAmount > 1000) {
+    return fail(ERR.VALIDATION_ERROR, "你这个金额有点不对头哈。");
+  }
+
+  const isUsdt =
+    paymentMethod === "usdt" ||
+    paymentMethod === "usdt_bep20";
+
+  // 原始金额永远保存用户实际支付的数值。
+  // 微信/支付宝 = CNY；TRC20/BEP20 = USDT。
+  const originalAmount = rawAmount;
+  const originalCurrency = isUsdt ? "USDT" : "CNY";
+
+  // amount_cents 是旧系统的人民币统计字段。
+  // 人民币继续正常写入。
+  // USDT 暂不冒充人民币，写入 1 分占位；
+  // 后续进度/排行榜会单独按币种处理。
+  const amountCents = isUsdt ? 1 : yuanToCents(rawAmount);
+
+  if (amountCents === null) {
+    return fail(ERR.VALIDATION_ERROR, "你这个金额有点不对头哈。");
+  }
+
+  const message = clean(body.message, LIMITS.messageMax);
+  const nickname = clean(body.nickname, LIMITS.nicknameMax);
+  const txid = clean(body.txid, LIMITS.txidMax);
+  const isAnonymous = body.isAnonymous ? 1 : 0;
+
+  // IP 不存明文
+  const { key: ipHash } = await computeDailyKey(ip, env.SERVER_SECRET);
+
+  // 3. 写入 donations（pending，等后台审核）
+  const deleteToken = randomToken();
+  const res = await env.DB.prepare(
+    `INSERT INTO donations
+       (
+         bowl_id,
+         nickname,
+         amount_cents,
+         original_amount,
+         original_currency,
+         message,
+         payment_method,
+         txid,
+         is_anonymous,
+         status,
+         ip_hash,
+         delete_token
+       )
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?)`
+  )
+    .bind(
+      bowl.id,
+      nickname,
+      amountCents,
+      originalAmount,
+      originalCurrency,    return fail(ERR.VALIDATION_ERROR, "啷个投的选一个嘛。");
   }
   const txid = clean(body.txid, LIMITS.txidMax);
   const isAnonymous = body.isAnonymous ? 1 : 0;
