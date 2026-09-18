@@ -29,7 +29,82 @@
 
   <main>
     <section class="hero">
-      <img class="hero-bowl anim-settle" src="/img/bowl.svg" alt="一只摆起的饭碗" />
+      /* ---------- 首页热饭蒸汽动画 ---------- */
+.hero-bowl-wrap {
+  position: relative;
+  width: 160px;
+  margin: 34px auto 6px;
+}
+
+.hero-bowl-wrap .hero-bowl {
+  display: block;
+  width: 160px;
+  margin: 0;
+}
+
+.steam {
+  position: absolute;
+  left: 50%;
+  bottom: 78%;
+  width: 120px;
+  height: 90px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.steam span {
+  position: absolute;
+  bottom: 0;
+  width: 14px;
+  height: 55px;
+  border-radius: 50%;
+  border-left: 5px solid rgba(255, 255, 255, 0.7);
+  filter: blur(2px);
+  opacity: 0;
+  animation: riceSteam 2.8s ease-in-out infinite;
+}
+
+.steam-1 {
+  left: 25px;
+  animation-delay: 0s !important;
+}
+
+.steam-2 {
+  left: 53px;
+  height: 68px !important;
+  animation-delay: 0.8s !important;
+}
+
+.steam-3 {
+  left: 82px;
+  animation-delay: 1.6s !important;
+}
+
+@keyframes riceSteam {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scaleX(0.8);
+  }
+
+  20% {
+    opacity: 0.65;
+  }
+
+  50% {
+    transform: translate3d(8px, -25px, 0) scaleX(1.1);
+  }
+
+  75% {
+    opacity: 0.35;
+    transform: translate3d(-7px, -48px, 0) scaleX(1.25);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(5px, -70px, 0) scaleX(1.45);
+  }
+}
       <h1>没得饭吃啷个办？<br /><em>先把饭碗儿摆出来嘛。</em></h1>
       <p class="sub">互联网这么大，总有个耿直人愿意请你吃口饭嘛。</p>
       <div class="hero-actions">
