@@ -1096,3 +1096,49 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
 .steam {
   bottom: calc(78% - 42px) !important;
 }
+/* ===== 快捷投喂 ===== */
+.quick-feed {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 8px 0 12px;
+}
+
+.quick-feed-btn {
+  min-height: 48px;
+  padding: 9px 10px;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  background: #fffcf2;
+  color: var(--ink-soft);
+  font-family: var(--font);
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.quick-feed-btn b {
+  display: block;
+  margin-top: 2px;
+  color: var(--gold-deep);
+  font-size: 15px;
+}
+
+.quick-feed-btn:active {
+  transform: scale(0.97);
+}
+
+.quick-feed-btn.active {
+  border-color: var(--gold-deep);
+  background: #fff4dc;
+  color: var(--red-deep);
+  box-shadow: 0 0 0 3px rgba(232, 163, 61, 0.16);
+}
+
+.quick-feed-btn.active b {
+  color: var(--red);
+}
