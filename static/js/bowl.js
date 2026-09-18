@@ -35,7 +35,77 @@
   let turnstileToken = "";
   let turnstileWidget = null;
   let turnstileSiteKey = "";
+  // ---------- 详情页动态米粒：0–60粒 ----------
+  const DETAIL_RICE_POINTS = [
+    [62,160,-15],[70,156,8],[78,161,-8],[86,156,15],[94,160,-12],
+    [102,155,7],[110,160,-16],[118,155,10],[126,160,-8],[134,155,14],
+    [142,160,-12],[150,155,7],[158,160,-15],[166,156,11],[174,160,-8],
+    [68,151,10],[77,148,-12],[86,152,15],[95,147,-8],[104,152,11],
+    [113,147,-14],[122,152,8],[131,147,-10],[140,152,14],[149,147,-7],
+    [158,152,10],[167,149,-13],[76,142,-10],[86,139,13],[96,143,-7],
+    [106,138,10],[116,143,-13],[126,138,8],[136,143,-9],[146,139,14],
+    [156,142,-11],[165,140,7],[84,133,12],[95,130,-9],[106,134,14],
+    [117,129,-7],[128,134,10],[139,130,-13],[150,134,8],[158,132,-10],
+    [94,123,-8],[105,126,12],[116,121,-10],[127,126,8],[138,122,-12],
+    [148,125,10],[103,114,10],[114,117,-8],[125,112,12],[136,117,-10],
+    [145,114,8],[111,104,-8],[122,108,11],[133,104,-10],[118,96,9]
+  ];
 
+  let renderedRiceCount = null;
+
+  function riceCountForBowl(b) {
+    const current = Math.max(0, Number(b?.currentYuan) || 0);
+    const target = Math.max(0, Number(b?.targetYuan) || 0);
+
+    if (!target) return 0;
+
+    return Math.min(
+      DETAIL_RICE_POINTS.length,
+      Math.round((DETAIL_RICE_POINTS.length * current) / target)
+    );
+  }
+
+  function renderDetailRice() {
+    const layer = $("#detail-rice-layer");
+    if (!layer || !bowl) return;
+
+    const nextCount = riceCountForBowl(bowl);
+    const previousCount = renderedRiceCount;
+
+    layer.innerHTML = "";
+
+    DETAIL_RICE_POINTS
+      .slice(0, nextCount)
+      .forEach(([cx, cy, angle], i) => {
+        const ns = "http://www.w3.org/2000/svg";
+        const group = document.createElementNS(ns, "g");
+
+        if (previousCount !== null && i >= previousCount) {
+          group.classList.add("detail-rice-new");
+          group.style.animationDelay =
+            `${Math.min((i - previousCount) * 35, 350)}ms`;
+        }
+
+        const grain = document.createElementNS(ns, "ellipse");
+
+        grain.setAttribute("cx", cx);
+        grain.setAttribute("cy", cy);
+        grain.setAttribute("rx", "6.4");
+        grain.setAttribute("ry", "2.75");
+        grain.setAttribute("fill", "#fdf6e3");
+        grain.setAttribute("stroke", "#e8d3ab");
+        grain.setAttribute("stroke-width", "1.05");
+        grain.setAttribute(
+          "transform",
+          `rotate(${angle} ${cx} ${cy})`
+        );
+
+        group.appendChild(grain);
+        layer.appendChild(group);
+      });
+
+    renderedRiceCount = nextCount;
+  }
   const STATUS_MAP = {
     active: ["🍚 还在讨生活", "s-active"],
     completed: ["🍚 吃饱喽，收碗！", "s-done"],
@@ -88,6 +158,7 @@
   }
 
   function render() {
+    renderDetailRice();
     const pct = bowl.percent;
     $("#d-title").textContent = bowl.title;
     $("#d-state").textContent = mealState(pct);
@@ -343,6 +414,8 @@
       tab.classList.add("active");
       payMethod = tab.dataset.pay;
       updateQuickFeed();
+      $("#rd-amount").value = "";
+      $$("#quick-feed .quick-feed-btn").forEach((b) => b.classList.remove("active"));
     });
   });
 
@@ -356,6 +429,10 @@
       $$("#quick-feed .quick-feed-btn").forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
     });
+  });
+
+  $("#rd-amount").addEventListener("input", () => {
+    $$("#quick-feed .quick-feed-btn").forEach((b) => b.classList.remove("active"));
   });
 
   updateQuickFeed();
