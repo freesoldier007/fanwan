@@ -45,9 +45,6 @@ export function formatDonation(row) {
     row.payment_method === "usdt" ||
     row.payment_method === "usdt_bep20";
 
-  // 新记录直接读取原始金额。
-  // 旧人民币记录继续兼容 amount_cents。
-  // 旧 USDT 因历史数据库没有真实U数量，不伪造数值。
   const originalAmount =
     row.original_amount != null
       ? Number(row.original_amount)
@@ -62,18 +59,37 @@ export function formatDonation(row) {
         ? "USDT"
         : "CNY";
 
+  const cnyEquivalentYuan =
+    row.cny_equiv_cents != null
+      ? Number(row.cny_equiv_cents) / 100
+      : !isUsdt
+        ? row.amount_cents / 100
+        : null;
+
   return {
     id: row.id,
+
     nickname: row.is_anonymous
       ? "匿名耿直人"
       : row.nickname || "路过滴耿直人",
 
-    // 保留旧字段，避免其它页面立即失效
-    amountYuan: !isUsdt ? row.amount_cents / 100 : null,
+    // 兼容旧页面
+    amountYuan: !isUsdt
+      ? row.amount_cents / 100
+      : null,
 
-    // 新的双币种字段
+    // 原始支付金额：交易记录继续显示原币种
     originalAmount,
     currency,
+
+    // 统一进度 / 排行榜使用人民币等值
+    cnyEquivalentYuan,
+
+    // 保留锁定汇率，方便以后管理页或审计使用
+    fxRateCny:
+      row.fx_rate_cny != null
+        ? Number(row.fx_rate_cny)
+        : null,
 
     message: row.message,
     paymentMethod: row.payment_method,
