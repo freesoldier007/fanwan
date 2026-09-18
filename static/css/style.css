@@ -939,3 +939,31 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
   .site-header { padding-top: 18px; }
   .brand { font-size: 20px; }
 }
+/* 蒸汽清晰度增强 */
+.steam span {
+  width: 16px;
+  border-left: 7px solid rgba(255, 255, 255, 0.98);
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.95));
+}
+
+@keyframes riceSteam {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scaleX(0.8);
+  }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.95;
+    transform: translate3d(8px, -25px, 0) scaleX(1.1);
+  }
+  75% {
+    opacity: 0.75;
+    transform: translate3d(-7px, -48px, 0) scaleX(1.25);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(5px, -70px, 0) scaleX(1.45);
+  }
+}
