@@ -1092,3 +1092,7 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
     transform: translate3d(6px, -90px, 0) scaleX(1.45);
   }
 }
+/* 蒸汽起点贴近碗口 */
+.steam {
+  bottom: calc(78% - 42px) !important;
+}
