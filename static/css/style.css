@@ -1142,3 +1142,48 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
 .quick-feed-btn.active b {
   color: var(--red);
 }
+/* ===== 未配置的支付方式 ===== */
+.pay-tab:disabled,
+.pay-tab.pay-unavailable {
+  opacity: 0.38;
+  cursor: not-allowed;
+  filter: grayscale(0.35);
+}
+
+/* ===== 投喂成功动画增强 ===== */
+.ding-scene.fed::before,
+.ding-scene.fed::after {
+  content: "✦";
+  position: absolute;
+  z-index: 3;
+  color: var(--gold-deep);
+  font-size: 18px;
+  opacity: 0;
+  animation: feedSpark 0.75s ease forwards;
+}
+
+.ding-scene.fed::before {
+  left: 13px;
+  top: 39px;
+}
+
+.ding-scene.fed::after {
+  right: 13px;
+  top: 24px;
+  animation-delay: 0.12s;
+}
+
+@keyframes feedSpark {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) rotate(0deg);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.15) rotate(18deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.75) rotate(32deg) translateY(-8px);
+  }
+}
