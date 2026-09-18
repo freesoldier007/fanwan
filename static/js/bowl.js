@@ -563,3 +563,5 @@
       setTimeout(resolve, 1000);
     });
   }
+load();
+})();
