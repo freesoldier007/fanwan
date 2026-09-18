@@ -278,6 +278,28 @@
       toast("摆碗的兄弟伙还没留收款方式，先精神支持一哈。");
       return;
     }
+      // 没配置的收款方式直接置灰；自动选中第一个可用方式
+    const payAvailable = {
+      wechat: !!bowl.wechatQr,
+      alipay: !!bowl.alipayQr,
+      usdt: !!(bowl.usdtQr || bowl.usdtAddress),
+      usdt_bep20: !!(bowl.usdtBep20Qr || bowl.usdtBep20Address),
+    };
+
+    const tabs = $$("#donate-pay-tabs .pay-tab");
+    tabs.forEach((tab) => {
+      const available = payAvailable[tab.dataset.pay];
+      tab.disabled = !available;
+      tab.classList.toggle("pay-unavailable", !available);
+    });
+
+    const firstAvailable = tabs.find((tab) => payAvailable[tab.dataset.pay]);
+    if (firstAvailable) {
+      tabs.forEach((tab) => tab.classList.remove("active"));
+      firstAvailable.classList.add("active");
+      payMethod = firstAvailable.dataset.pay;
+      updateQuickFeed();
+    }
     done = false;
     showStep("pay");
     donateMask.classList.add("show");
