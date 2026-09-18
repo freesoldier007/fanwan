@@ -967,3 +967,50 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
     transform: translate3d(5px, -70px, 0) scaleX(1.45);
   }
 }
+/* 蒸汽最终修复：纯 CSS 白色热气，无滤镜方块 */
+.steam span {
+  width: 8px;
+  height: 58px;
+  background: transparent;
+  border: 0;
+  border-left: 6px solid rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  filter: none !important;
+  box-shadow: none;
+  opacity: 0;
+}
+
+.steam-1 {
+  left: 27px;
+}
+
+.steam-2 {
+  left: 55px;
+  height: 68px !important;
+}
+
+.steam-3 {
+  left: 83px;
+}
+
+@keyframes riceSteam {
+  0% {
+    opacity: 0;
+    transform: translate(0, 8px) rotate(-5deg) scale(0.8);
+  }
+  20% {
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.9;
+    transform: translate(7px, -25px) rotate(5deg) scale(1);
+  }
+  75% {
+    opacity: 0.65;
+    transform: translate(-6px, -48px) rotate(-4deg) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(4px, -70px) rotate(4deg) scale(1.2);
+  }
+}
