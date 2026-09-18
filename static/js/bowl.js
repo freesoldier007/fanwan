@@ -283,13 +283,38 @@
     donateMask.classList.add("show");
   });
 
+    function updateQuickFeed() {
+    const isUsdt = payMethod === "usdt" || payMethod === "usdt_bep20";
+
+    $$("#quick-feed .quick-feed-btn").forEach((btn) => {
+      const amount = isUsdt ? btn.dataset.usdt : btn.dataset.cny;
+      const label = isUsdt ? `${amount} USDT` : `¥${amount}`;
+      btn.querySelector("b").textContent = label;
+    });
+  }
+
   $$("#donate-pay-tabs .pay-tab").forEach((tab) => {
     tab.addEventListener("click", () => {
       $$("#donate-pay-tabs .pay-tab").forEach((t) => t.classList.remove("active"));
       tab.classList.add("active");
       payMethod = tab.dataset.pay;
+      updateQuickFeed();
     });
   });
+
+  $$("#quick-feed .quick-feed-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const isUsdt = payMethod === "usdt" || payMethod === "usdt_bep20";
+      const amount = isUsdt ? btn.dataset.usdt : btn.dataset.cny;
+
+      $("#rd-amount").value = amount;
+
+      $$("#quick-feed .quick-feed-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  });
+
+  updateQuickFeed();
 
   $("#btn-next").addEventListener("click", () => {
     // 先检查这个方式到底留没留
