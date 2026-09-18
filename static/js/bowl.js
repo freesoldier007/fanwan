@@ -1,7 +1,29 @@
 /* 🍚 饭碗儿 —— 饭碗儿详情页 */
 (() => {
-  const { $, $$, get, post, toast, yuan, fmtTime, mealState, progressText, pick } = FW;
+    const { $, $$, get, post, toast, yuan, fmtTime, pick } = FW;
 
+  // 兼容旧版公共 JS，避免详情页因辅助函数缺失而卡在 loading
+  const mealState = typeof FW.mealState === "function"
+    ? FW.mealState
+    : (percent) => {
+        if (percent >= 100) return "吃饱喽！";
+        if (percent >= 90) return "差最后一口";
+        if (percent >= 60) return "马上吃饱";
+        if (percent >= 30) return "饭有着落了";
+        if (percent > 0) return "开始有饭了";
+        return "还没吃上一口";
+      };
+
+  const progressText = typeof FW.progressText === "function"
+    ? FW.progressText
+    : (percent) => {
+        if (percent >= 100) return "吃饱喽！收碗！🍚";
+        if (percent >= 90) return "马上吃饱，就差最后一口。";
+        if (percent >= 60) return "稳了稳了，再整两口。";
+        if (percent >= 30) return "饭开始有着落了。";
+        if (percent > 0) return "开张了，慢慢来嘛。";
+        return "碗摆起了，就等第一口。";
+      };
   // 兼容两种入口：老式 /bowl.html?slug=xxx 和新式 /cunzhang
   const slug =
     new URLSearchParams(location.search).get("slug") ||
