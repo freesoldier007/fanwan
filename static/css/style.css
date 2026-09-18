@@ -999,4 +999,22 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
     transform: translate(0, 8px) rotate(-7deg) scaleX(0.65);
   }
 
-  15
+  15% {
+    opacity: 0.95;
+  }
+
+  45% {
+    opacity: 0.9;
+    transform: translate(7px, -22px) rotate(5deg) scaleX(0.85);
+  }
+
+  75% {
+    opacity: 0.65;
+    transform: translate(-6px, -48px) rotate(-5deg) scaleX(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(5px, -78px) rotate(6deg) scaleX(1.15);
+  }
+}
