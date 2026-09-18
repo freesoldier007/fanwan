@@ -166,18 +166,10 @@ img { max-width: 100%; }
   pointer-events: none;
   z-index: 2;
 }
-
-.steam span {
-  position: absolute;
-  bottom: 0;
-  width: 14px;
-  height: 55px;
-  border-radius: 50%;
-  border-left: 5px solid rgba(255, 255, 255, 0.7);
-  filter: blur(2px);
-  opacity: 0;
-  animation: riceSteam 2.8s ease-in-out infinite;
-}
+width: 16px;
+border-left: 7px solid rgba(255, 255, 255, 0.95);
+filter: blur(1px);
+filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
 
 .steam-1 {
   left: 25px;
