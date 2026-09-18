@@ -512,7 +512,7 @@
         turnstileToken: (await ensureTurnstileToken()) || undefined,
       });
       localStorage.setItem(`donation_delete_${data.id}`, data.deleteToken);
-      localStorage.setItem(`donation_delete_${data.id}`, data.deleteToken);
+      
 
       $("#done-title").textContent = "🍚 这口饭，我给你记到起了。";
       $("#done-sub").textContent = "收到，记到饭碗儿头了。等摆碗的兄弟伙点个“放行”就显示出来。";
