@@ -130,10 +130,36 @@
             <label for="rd-nickname">叫啥子嘛？</label>
             <input type="text" id="rd-nickname" maxlength="30" placeholder="叫啥子嘛？" />
           </div>
-          <div class="field">
-            <label for="rd-amount">投一口，多少随你。<span class="req">*</span></label>
-            <input type="number" id="rd-amount" min="1" max="1000" step="0.01" placeholder="投一口，多少随你。" />
-          </div>
+          <<div class="field">
+  <label for="rd-amount">投一口，多少随你。<span class="req">*</span></label>
+
+  <div class="quick-feed" id="quick-feed" aria-label="快捷投喂金额">
+    <button type="button" class="quick-feed-btn" data-cny="3" data-usdt="1">
+      🥤 一瓶水 <b>¥3</b>
+    </button>
+
+    <button type="button" class="quick-feed-btn" data-cny="10" data-usdt="2">
+      🥟 一顿早餐 <b>¥10</b>
+    </button>
+
+    <button type="button" class="quick-feed-btn" data-cny="20" data-usdt="3">
+      🍜 一碗面 <b>¥20</b>
+    </button>
+
+    <button type="button" class="quick-feed-btn" data-cny="30" data-usdt="5">
+      🍗 加个鸡腿 <b>¥30</b>
+    </button>
+  </div>
+
+  <input
+    type="number"
+    id="rd-amount"
+    min="1"
+    max="1000"
+    step="0.01"
+    placeholder="也可以自己填金额。"
+  />
+</div>
           <div class="field">
             <label for="rd-message">留言</label>
             <input type="text" id="rd-message" maxlength="200" placeholder="说两句嘛，给他加点油。" />
