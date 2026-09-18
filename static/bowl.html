@@ -158,76 +158,114 @@
     <button type="button" class="quick-feed-btn" data-cny="10" data-usdt="2">
       🥟 一顿早餐 <b>¥10</b>
     </button>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>__TITLE__</title>
+  <meta name="description" content="__META_DESC__" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="__TITLE__" />
+  <meta property="og:description" content="__OG_DESC__" />
+  <meta property="og:image" content="__OG_IMAGE__" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="__OG_URL__" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/css/style.css?v=20260918-3" />
+</head>
 
-    <button type="button" class="quick-feed-btn" data-cny="20" data-usdt="3">
-      🍜 一碗面 <b>¥20</b>
-    </button>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/">
+      <img src="/img/logo.svg" alt="饭碗儿 Logo" />
+      <span>
+        饭碗儿
+        <small>没得饭吃啷个办？先把饭碗儿摆出来嘛。</small>
+      </span>
+    </a>
 
-    <button type="button" class="quick-feed-btn" data-cny="30" data-usdt="5">
-      🍗 加个鸡腿 <b>¥30</b>
-    </button>
-  </div>
+    <nav class="nav">
+      <a class="btn btn-sm btn-ghost" href="/#bowls">👀 看哈哪个还在讨生活</a>
+      <a class="btn btn-sm btn-primary" href="/create.html">🍚 摆个饭碗儿</a>
+    </nav>
+  </header>
 
-  <input
-    type="number"
-    id="rd-amount"
-    min="1"
-    max="1000"
-    step="0.01"
-    placeholder="也可以自己填金额。"
-  />
-</div>
-          <div class="field">
-            <label for="rd-message">留言</label>
-            <input type="text" id="rd-message" maxlength="200" placeholder="说两句嘛，给他加点油。" />
+  <main>
+    <div class="detail-wrap">
+      <div id="loading" class="spinner"></div>
+
+      <div id="detail" class="hidden">
+        <div class="detail-card">
+          <div class="detail-top">
+
+            <div class="detail-bowl-progress anim-settle">
+              <img
+                class="detail-bowl-img"
+                src="/img/bowl-empty.svg"
+                alt="饭碗儿"
+              />
+
+              <svg
+                class="detail-rice-layer"
+                id="detail-rice-layer"
+                viewBox="0 0 240 240"
+                aria-hidden="true"
+              ></svg>
+            </div>
+
+            <div>
+              <h1 class="detail-title" id="d-title"></h1>
+
+              <div class="detail-amount">
+                <span class="amt-state" id="d-state"></span>
+                ·
+                <b id="d-current"></b>
+                /
+                <span id="d-target"></span>
+              </div>
+
+              <span class="detail-status" id="d-status"></span>
+            </div>
           </div>
-          <div class="field hidden" id="rd-txid-field">
-            <label for="rd-txid">TXID（交易哈希）<span class="hint">有就甩过来，没有也不强求。</span></label>
-            <input type="text" id="rd-txid" maxlength="128" placeholder="有交易哈希就甩过来。" />
+
+          <div class="detail-progress">
+            <div class="progress">
+              <div class="fill" id="d-fill"></div>
+              <span class="pct" id="d-pct"></span>
+            </div>
+
+            <p
+              style="color:var(--ink-soft); font-size:14px; margin-top:8px; text-align:center;"
+              id="d-progress-text"
+            ></p>
           </div>
-          <div class="field">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-              <input type="checkbox" id="rd-anon" style="width:18px;height:18px;" />
-              莫留名字
-            </label>
-            <span class="hint">做好事不留名，巴适。</span>
+
+          <div class="detail-desc">
+            <p
+              id="d-want"
+              style="color:var(--ink-soft); margin-bottom:12px;"
+            ></p>
+
+            <div class="why" id="d-reason"></div>
           </div>
-          <div class="turnstile-wrap" id="turnstile-wrap"></div>
-          <button class="btn btn-lg btn-primary" id="btn-submit-donation" style="width:100%;">我已经投了，回来报个到</button>
-        </div>
-      </div>
 
-      <!-- 第三步：收到 -->
-      <div id="step-done" class="hidden" style="text-align:center;">
-        <div class="ding-scene" id="ding-scene">
-          <div class="rice"></div>
-          <div class="rice"></div>
-          <div class="rice"></div>
-          <img class="ding-bowl" src="/img/bowl.svg" alt="饭碗" />
-        </div>
-        <p class="ding-text" id="done-title"></p>
-        <p style="color:var(--ink-soft);" id="done-sub"></p>
-        <div class="btn-row" style="justify-content:center; margin-top:18px;">
-          <button class="btn btn-gold" data-close>要得，收工</button>
-        </div>
-      </div>
-    <div class="alert" style="font-size:13px; word-break:break-all;" id="share-url"></div>
-<button class="btn btn-gold" id="btn-copy-share" style="width:100%;">复制饭碗儿链接</button>
+          <div class="kv" id="d-kv"></div>
 
-  <!-- 分享弹窗 -->
-  <div class="modal-mask" id="share-mask">
-    <div class="modal" style="text-align:center;">
-      <button class="close" data-close>×</button>
-      <h3>把饭碗儿甩出去</h3>
-      <script src="/js/bowl.js?v=20260918-3"></script>
-      <script src="/js/api.js?v=20260918-2"></script>
-<script src="/js/bowl.js?v=20260918-3"></script>
-      <p style="color:var(--muted); font-size:13px; margin-top:12px;" id="share-copied" class="hidden">饭碗儿链接抄到起了。</p>
-    </div>
-  </div>
+          <div class="detail-actions">
+            <button class="btn btn-lg btn-primary" id="btn-donate">
+              🍚 投一口
+            </button>
 
-  <link rel="preconnect" href="https://challenges.cloudflare.com" crossorigin />
-  <script src="/js/api.js?v=20260918-2"></script>
-  <script src="/js/bowl.js?v=20260918-2"></script>
-</body>
-</html>
+            <button class="btn btn-lg btn-gold" id="btn-share">
+              📣 喊兄弟伙来瞅一哈
+            </button>
+
+            <button class="btn btn-lg btn-ghost hidden" id="btn-edit">
+              ✏️ 改一哈
+            </button>
+
+            <button
+              class="btn btn-lg btn-ghost hidden"
+              id="btn-man
