@@ -1,6 +1,18 @@
 /* 🍚 饭碗儿 —— 首页 */
 (() => {
-  const { $, get, yuan, fmtTime, mealState, pick } = FW;
+    const { $, get, yuan, fmtTime, pick } = FW;
+
+  // 兼容旧版 api.js 缓存，避免 mealState 缺失导致饭碗卡片无法渲染
+  const mealState = typeof FW.mealState === "function"
+    ? FW.mealState
+    : (percent) => {
+        if (percent >= 100) return "吃饱喽！";
+        if (percent >= 90) return "差最后一口";
+        if (percent >= 60) return "马上吃饱";
+        if (percent >= 30) return "饭有着落了";
+        if (percent > 0) return "开始有饭了";
+        return "还没吃上一口";
+      };
 
   // 底部土味口号：从 /tips.md 随机轮换（每 3 秒一句）
   const FALLBACK_TIPS = [
