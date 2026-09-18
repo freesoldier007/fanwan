@@ -74,7 +74,7 @@ export async function approveDonation(request, env) {
 
   await env.DB.prepare(
     `UPDATE bowls SET current_cents = current_cents +
-       (SELECT amount_cents FROM donations WHERE id=?)
+       (SELECT COALESCE(cny_equiv_cents, amount_cents) FROM donations WHERE id=?)
      WHERE id = (SELECT bowl_id FROM donations WHERE id=?)`
   )
     .bind(id, id)
@@ -127,7 +127,7 @@ export async function deleteItem(request, env) {
         ? [
             env.DB.prepare(
               "UPDATE bowls SET current_cents = MAX(0, current_cents - ?) WHERE id=?"
-            ).bind(row.amount_cents, row.bowl_id),
+            ).bind(row.cny_equiv_cents ?? row.amount_cents, row.bowl_id),
           ]
         : []),
     ]);
