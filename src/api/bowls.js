@@ -33,9 +33,12 @@ export async function listBowls(request, env) {
   );
 
   // 懒更新：先把过期的饭碗儿标记为 expired
+  // deadline 存的是 ISO 串（"2026-09-18T00:00:00.000Z"），跟 datetime('now') 的
+  // "2026-09-18 00:00:00" 不是同一种格式，直接比 TEXT 会因为第 11 位 'T' > ' '
+  // 把「当天已过期」的碗判成没过期。两边都过一遍 datetime() 再比。
   await env.DB.prepare(
     `UPDATE bowls SET status='expired', updated_at=datetime('now')
-     WHERE status='active' AND deadline IS NOT NULL AND deadline < datetime('now')`
+     WHERE status='active' AND deadline IS NOT NULL AND datetime(deadline) < datetime('now')`
   ).run();
 
   const where = status === "all" ? "" : "WHERE status = ?";
