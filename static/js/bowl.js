@@ -512,11 +512,16 @@
         turnstileToken: (await ensureTurnstileToken()) || undefined,
       });
       localStorage.setItem(`donation_delete_${data.id}`, data.deleteToken);
-      // 成功动画：米粒掉进饭碗 + 碗轻轻晃一哈
-      await playDing();
+      localStorage.setItem(`donation_delete_${data.id}`, data.deleteToken);
+
       $("#done-title").textContent = "🍚 这口饭，我给你记到起了。";
       $("#done-sub").textContent = "收到，记到饭碗儿头了。等摆碗的兄弟伙点个“放行”就显示出来。";
+
+      // 必须先显示成功场景，再播放投喂动画
       showStep("done");
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      await playDing();
+
       // 刷新数据（一次请求）
       refresh();
     } catch (e) {
