@@ -563,5 +563,48 @@
       setTimeout(resolve, 1000);
     });
   }
-load();
+async function refresh() {
+    try {
+      const data = await get(`/api/bowl/${slug}`);
+      bowl = data.bowl;
+      donations = data.donations || [];
+      render();
+    } catch { }
+  }
+
+  /* ---------- 弹窗开关 ---------- */
+  function showStep(step) {
+    ["pay", "report", "done"].forEach((s) => {
+      $(`#step-${s}`).classList.toggle("hidden", s !== step);
+    });
+
+    if (step === "report") {
+      renderTurnstile();
+
+      const t0 = Date.now();
+      const iv = setInterval(() => {
+        renderTurnstile();
+        if (turnstileWidget || Date.now() - t0 > 15000) {
+          clearInterval(iv);
+        }
+      }, 400);
+    }
+  }
+
+  [shareMask, donateMask].forEach((mask) => {
+    mask.addEventListener("click", (e) => {
+      if (e.target === mask || e.target.dataset.close !== undefined) {
+        mask.classList.remove("show");
+      }
+    });
+  });
+
+  // 关闭后若投喂成功过，顺手刷新列表展示最新记录
+  donateMask.addEventListener("click", (e) => {
+    if (e.target === donateMask || e.target.dataset.close !== undefined) {
+      if (done) refresh();
+    }
+  });
+
+  load();
 })();
