@@ -506,75 +506,38 @@
   });
 
   /* ---------- 投喂成功动画：米粒 + 叮 ---------- */
-  function playDing() {
+    function playDing() {
     return new Promise((resolve) => {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = "sine";
-        osc.frequency.setValueAtTime(1568, ctx.currentTime); // G6
+        osc.frequency.setValueAtTime(1568, ctx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(2093, ctx.currentTime + 0.18);
         gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.28, ctx.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.22, ctx.currentTime + 0.02);
         gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
         osc.connect(gain).connect(ctx.destination);
         osc.start();
         osc.stop(ctx.currentTime + 0.55);
-      } catch { /* 没声音就没声音嘛 */ }
+      } catch {}
+
+      const scene = $("#ding-scene");
+
+      // 每次投喂都重新播放，避免第二次动画失效
+      scene.classList.remove("wobble", "fed");
+      $$("#ding-scene .rice").forEach((r) => r.classList.remove("drop"));
+      void scene.offsetWidth;
 
       $$("#ding-scene .rice").forEach((r, i) => {
-        r.classList.remove("drop");
-        void r.offsetWidth;
-        setTimeout(() => r.classList.add("drop"), i * 140);
+        setTimeout(() => r.classList.add("drop"), i * 100);
       });
-      // 米粒落到碗头，碗轻轻晃一下
-      setTimeout(() => $("#ding-scene").classList.add("wobble"), 320);
-      setTimeout(resolve, 850);
+
+      setTimeout(() => {
+        scene.classList.add("wobble", "fed");
+      }, 330);
+
+      setTimeout(resolve, 1000);
     });
   }
-
-  async function refresh() {
-    try {
-      const data = await get(`/api/bowl/${slug}`);
-      bowl = data.bowl;
-      donations = data.donations || [];
-      render();
-    } catch { }
-  }
-
-  /* ---------- 弹窗开关 ---------- */
-  function showStep(step) {
-    ["pay", "report", "done"].forEach((s) => {
-      $(`#step-${s}`).classList.toggle("hidden", s !== step);
-    });
-    // 走到"看收款方式+报到"这一步，Turnstile 容器才可见。
-    // 脚本和 sitekey 早就绪的话，这里一渲染就出验证（非交互模式自动过）。
-    if (step === "report") {
-      renderTurnstile();
-      // 脚本万一还没加载完（首次进网络慢），轮询补渲染，莫让用户卡在报到这步
-      const t0 = Date.now();
-      const iv = setInterval(() => {
-        renderTurnstile();
-        if (turnstileWidget || Date.now() - t0 > 15000) clearInterval(iv);
-      }, 400);
-    }
-  }
-
-  [shareMask, donateMask].forEach((mask) => {
-    mask.addEventListener("click", (e) => {
-      if (e.target === mask || e.target.dataset.close !== undefined) {
-        mask.classList.remove("show");
-      }
-    });
-  });
-
-  // 关闭后若投喂成功过，顺手刷新列表展示最新记录
-  donateMask.addEventListener("click", (e) => {
-    if (e.target === donateMask || e.target.dataset.close !== undefined) {
-      if (done) refresh();
-    }
-  });
-
-  load();
-})();
