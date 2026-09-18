@@ -1018,3 +1018,77 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
     transform: translate(5px, -78px) rotate(6deg) scaleX(1.15);
   }
 }
+/* ===== 恢复初版蒸汽形态，仅放大 ===== */
+
+.steam {
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 78% !important;
+  width: 150px !important;
+  height: 115px !important;
+  transform: translateX(-50%) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  overflow: visible !important;
+}
+
+.steam span {
+  display: block !important;
+  position: absolute !important;
+  bottom: 0 !important;
+
+  width: 18px !important;
+  height: 72px !important;
+
+  background: transparent !important;
+  border: 0 !important;
+  border-left: 7px solid rgba(255,255,255,0.70) !important;
+  border-radius: 50% !important;
+
+  filter: blur(2px) !important;
+  box-shadow: none !important;
+
+  opacity: 0;
+  animation: riceSteamBig 2.8s ease-in-out infinite !important;
+}
+
+.steam-1 {
+  left: 30px !important;
+  animation-delay: 0s !important;
+}
+
+.steam-2 {
+  left: 66px !important;
+  height: 88px !important;
+  animation-delay: 0.8s !important;
+}
+
+.steam-3 {
+  left: 103px !important;
+  animation-delay: 1.6s !important;
+}
+
+@keyframes riceSteamBig {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scaleX(0.8);
+  }
+
+  20% {
+    opacity: 0.65;
+  }
+
+  50% {
+    transform: translate3d(10px, -32px, 0) scaleX(1.1);
+  }
+
+  75% {
+    opacity: 0.35;
+    transform: translate3d(-9px, -62px, 0) scaleX(1.25);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(6px, -90px, 0) scaleX(1.45);
+  }
+}
