@@ -367,29 +367,49 @@ async function ownDonation(env, bowl, body) {
   return { row };
 }
 
-// POST /api/bowl/:slug/approve {id, editToken} —— 放他过（幂等：只处理 pending）
 export async function approveOwnDonation(request, env, slug) {
-  if (!isValidSlug(slug)) return fail(ERR.NOT_FOUND, "这口饭好像没摆在这儿。", 404);
+  if (!isValidSlug(slug)) {
+    return fail(ERR.NOT_FOUND, "这口饭好像没摆在这儿。", 404);
+  }
+
   const bowl = await getBowlBySlug(env.DB, slug);
-  if (!bowl) return fail(ERR.NOT_FOUND, "这口饭好像没摆在这儿。", 404);
-  const { row, err } = await ownDonation(env, bowl, await readJson(request));
+  if (!bowl) {
+    return fail(ERR.NOT_FOUND, "这口饭好像没摆在这儿。", 404);
+  }
+
+  const { row, err } = await ownDonation(
+    env,
+    bowl,
+    await readJson(request)
+  );
   if (err) return err;
 
   const res = await env.DB.prepare(
-    `UPDATE donations SET status='approved', approved_at=datetime('now')
+    `UPDATE donations
+     SET status='approved', approved_at=datetime('now')
      WHERE id=? AND status='pending'`
-  ).bind(row.id).run();
+  )
+    .bind(row.id)
+    .run();
+
+  if (res.meta.changes > 0) {
+    const progressCents = Number(row.cny_equiv_cents);
 
     if (
-    res.meta.changes > 0 &&
-    row.payment_method !== "usdt" &&
-    row.payment_method !== "usdt_bep20"
-  ) {
-    await env.DB.prepare(
-      `UPDATE bowls SET current_cents = current_cents + ?
-       WHERE id = ?`
-    ).bind(row.amount_cents, bowl.id).run();
+      Number.isInteger(progressCents) &&
+      progressCents > 0
+    ) {
+      await env.DB.prepare(
+        `UPDATE bowls
+         SET current_cents = current_cents + ?,
+             updated_at = datetime('now')
+         WHERE id = ?`
+      )
+        .bind(progressCents, bowl.id)
+        .run();
+    }
   }
+
   return ok({ id: row.id });
 }
 // POST /api/bowl/:slug/reject {id, editToken} —— 这个不行
