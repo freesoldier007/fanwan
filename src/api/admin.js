@@ -17,18 +17,45 @@ export async function pendingDonations(request, env) {
      ORDER BY d.created_at ASC`
   ).all();
   return ok({
-    items: rows.results.map((r) => ({
-      id: r.id,
-      slug: r.slug,
-      bowlTitle: r.bowl_title,
-      nickname: r.nickname || "匿名",
-      amountYuan: r.amount_cents / 100,
-      message: r.message,
-      paymentMethod: r.payment_method,
-      txid: r.txid,
-      anonymous: !!r.is_anonymous,
-      createdAt: r.created_at,
-    })),
+    items: rows.results.map((r) => {
+      const isUsdt =
+        r.payment_method === "usdt" || r.payment_method === "usdt_bep20";
+      return {
+        id: r.id,
+        slug: r.slug,
+        bowlTitle: r.bowl_title,
+        nickname: r.nickname || "匿名",
+        amountYuan: isUsdt ? null : r.amount_cents / 100,
+
+        // 原始支付金额 / 币种：USDT 后台也按原币种显示
+        originalAmount:
+          r.original_amount != null
+            ? Number(r.original_amount)
+            : isUsdt
+              ? null
+              : r.amount_cents / 100,
+        currency:
+          r.original_currency && r.original_amount != null
+            ? r.original_currency
+            : isUsdt
+              ? "USDT"
+              : "CNY",
+
+        // 人民币统计一律用等值金额，旧数据回退 amount_cents
+        cnyEquivalentYuan:
+          r.cny_equiv_cents != null
+            ? Number(r.cny_equiv_cents) / 100
+            : !isUsdt
+              ? r.amount_cents / 100
+              : null,
+
+        message: r.message,
+        paymentMethod: r.payment_method,
+        txid: r.txid,
+        anonymous: !!r.is_anonymous,
+        createdAt: r.created_at,
+      };
+    }),
   });
 }
 

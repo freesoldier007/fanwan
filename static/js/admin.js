@@ -27,6 +27,21 @@
   }
 
   /* ---------- 待审核 ---------- */
+  function amountText(d) {
+    if (d.currency === "USDT") {
+      if (d.originalAmount == null) return "历史 USDT";
+      return `${Number(d.originalAmount).toLocaleString("en-US", {
+        maximumFractionDigits: 6
+      })} USDT`;
+    }
+    return `¥${yuan(d.originalAmount != null ? d.originalAmount : d.amountYuan)}`;
+  }
+
+  function cnyHint(d) {
+    if (d.currency !== "USDT" || d.cnyEquivalentYuan == null) return "";
+    return `<br/><small style="color:var(--muted);">≈ ¥${yuan(d.cnyEquivalentYuan)}</small>`;
+  }
+
   async function loadPending() {
     const wrap = $("#pending-wrap");
     wrap.innerHTML = '<div class="spinner"></div>';
@@ -51,7 +66,7 @@
           <td><small>${fmtTime(d.createdAt)}</small></td>
           <td><a href="/${d.slug}" target="_blank">${esc(d.bowlTitle)}</a><br/><small>${d.slug}</small></td>
           <td>${esc(d.nickname)}${d.anonymous ? " <small>(匿名)</small>" : ""}</td>
-          <td><b style="color:var(--gold-deep);">¥${yuan(d.amountYuan)}</b></td>
+          <td><b style="color:var(--gold-deep);">${amountText(d)}</b>${cnyHint(d)}</td>
           <td>${esc(d.message) || "<small>—</small>"}</td>
           <td><small>${PAY[d.paymentMethod] || d.paymentMethod}${d.txid ? "<br/>" + esc(d.txid) : ""}</small></td>
           <td>
