@@ -112,6 +112,66 @@
     expired: ["🍚 饭凉了，收碗了", "s-cold"],
     hidden: ["🍚 收摊了", "s-cold"],
   };
+
+  /* ---------- 四段碗状态（gamification v1） ---------- */
+  // 只读已有的 trusted 值（percent / currentYuan / targetYuan），不做任何新换算。
+  function stageForPercent(p) {
+    if (p >= 100) return "full";
+    if (p >= 90) return "almost";
+    if (p >= 50) return "hearty";
+    if (p >= 25) return "filling";
+    return "empty";
+  }
+
+  const STAGE_LABELS = {
+    empty: "等待添饭",
+    filling: "正在添饭",
+    hearty: "快盛满了",
+    almost: "就差最后一勺",
+    full: "饭碗已盛满",
+  };
+
+  // 90%–99%：还差多少钱。值不可信/拿不到就返回 null（宁可不显示，不改后端）。
+  function remainingYuanForBowl(b) {
+    const current = Number(b?.currentYuan);
+    const target = Number(b?.targetYuan);
+    const pct = Number(b?.percent);
+    if (!Number.isFinite(current) || !Number.isFinite(target)) return null;
+    if (target <= 0 || current < 0) return null;
+    if (!Number.isFinite(pct) || pct < 90 || pct >= 100) return null;
+    const remaining = target - current;
+    // 值不一致（老缓存/四舍五入）时宁可少显示
+    if (remaining <= 0 || remaining > target) return null;
+    return remaining;
+  }
+
+  // 庆祝动画只放一次：仅当用户正在看页面时从 <100% 跨到 >=100% 才放；
+  // 新开就是满碗的只给静态满碗呈现，绝不重播。
+  let celebratedFor = null;
+  let lastRenderedPercent = null;
+  function maybeCelebrate(nextBowl) {
+    const layer = $("#d-celebrate");
+    if (!layer || !nextBowl) return;
+    const pct = Number(nextBowl.percent) || 0;
+    const stage = stageForPercent(pct);
+    const key = nextBowl.slug || slug;
+    const prev = lastRenderedPercent;
+    lastRenderedPercent = pct;
+    if (stage !== "full") {
+      celebratedFor = null; // 回退后允许下次跨线再放一次
+      return;
+    }
+    if (celebratedFor === key) return; // 同一碗同一跨线只放一次
+    const isCrossing = prev !== null && prev < 100; // 看着看着才满的
+    celebratedFor = key;
+    if (!isCrossing) return; // 新开已满 / 已放过 → 静态满碗
+    const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return; // 减少动效：静态满碗
+    layer.classList.remove("celebrate-on");
+    void layer.offsetWidth; // 重置动画
+    layer.classList.add("celebrate-on");
+    setTimeout(() => layer.classList.remove("celebrate-on"), 2400);
+  }
   function donationAmount(d) {
     if (d.currency === "USDT") {
       if (d.originalAmount == null) return "历史 USDT";
@@ -159,7 +219,30 @@
 
   function render() {
     renderDetailRice();
+    maybeCelebrate(bowl);
     const pct = bowl.percent;
+
+    // 四段碗状态：容器 class + 阶段标签
+    const stage = stageForPercent(Number(pct) || 0);
+    const bowlStageEl = $("#d-bowl-stage");
+    if (bowlStageEl) {
+      bowlStageEl.className = "detail-bowl-progress anim-settle stage-" + stage;
+    }
+    const stagePill = $("#d-stage-pill");
+    if (stagePill) stagePill.textContent = STAGE_LABELS[stage] || "";
+
+    // 90%–99%：还差多少钱（值不可靠就不显示）
+    const remainingEl = $("#d-remaining");
+    if (remainingEl) {
+      const remaining = remainingYuanForBowl(bowl);
+      if (remaining == null) {
+        remainingEl.classList.add("hidden");
+      } else {
+        remainingEl.textContent = `还差 ¥${yuan(remaining)}`;
+        remainingEl.classList.remove("hidden");
+      }
+    }
+
     $("#d-title").textContent = bowl.title;
     $("#d-state").textContent = mealState(pct);
     $("#d-current").textContent = `¥${yuan(bowl.currentYuan)}`;
