@@ -348,14 +348,11 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
   height: 100%;
   border-radius: 11px;
   background-color: var(--gold);
-  background-image: url("../img/rice.svg");
-  background-size: 26px 26px;
-  background-repeat: repeat-x;
   transition: width 0.7s ease;
   position: relative;
 }
 
-.progress .fill.full { background-color: var(--red); }
+.progress .fill.full { background-color: var(--green); }
 
 .progress .pct {
   position: absolute;
@@ -369,6 +366,9 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
   z-index: 2;
   text-shadow: 0 0 6px var(--card);
 }
+
+/* 满碗：绿色实底，百分比改白色更易读 */
+.progress .fill.full + .pct { color: #fff; }
 
 .bowl-card .foot {
   display: flex;
@@ -577,7 +577,6 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
 
 .detail-progress { margin: 22px 0; position: relative; z-index: 1; }
 .detail-progress .progress { height: 34px; }
-.detail-progress .progress .fill { background-size: 34px 34px; }
 .detail-progress .pct { font-size: 15px; }
 
 .detail-desc { margin: 20px 0; position: relative; z-index: 1; }
