@@ -13,17 +13,20 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:url" content="__OG_URL__" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="stylesheet" href="/css/style.css?v=20260918-3" />
+  <link rel="stylesheet" href="/css/style.css?v=v12-1" />
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="/">
-      <img src="/img/logo.svg" alt="饭碗儿 Logo" />
-      <span>饭碗儿<small>没得饭吃啷个办？先把饭碗儿摆出来嘛。</small></span>
+      <img src="/img/logo.svg" alt="饭碗儿品牌标识：一只冒着热气的奶油白瓷碗" />
+      <span class="brand-lockup">
+        <b>饭碗儿 <i>Fanwan</i></b>
+        <small>轻众筹，一碗饭，一份希望</small>
+      </span>
     </a>
     <nav class="nav">
-      <a class="btn btn-sm btn-ghost" href="/#bowls">👀 看哈哪个还在讨生活</a>
-      <a class="btn btn-sm btn-primary" href="/create.html">🍚 摆个饭碗儿</a>
+      <a class="btn btn-sm btn-ghost" href="/#bowls">👀 看看大家的饭碗</a>
+      <a class="btn btn-sm btn-primary" href="/create.html">发起饭碗</a>
     </nav>
   </header>
 
@@ -35,7 +38,7 @@
         <div class="detail-card">
           <div class="detail-top">
             <div class="detail-bowl-progress anim-settle" id="d-bowl-stage">
-              <img class="detail-bowl-img" src="/img/bowl-heart.svg" alt="饭碗儿" />
+              <img class="detail-bowl-img" src="/img/bowl-v12.svg" alt="盛着白米饭的奶油白瓷碗" />
               <svg
                 class="detail-rice-layer"
                 id="detail-rice-layer"
@@ -78,11 +81,13 @@
           <div class="kv" id="d-kv"></div>
 
           <div class="detail-actions">
-            <button class="btn btn-lg btn-primary" id="btn-donate">🍚 投一口</button>
+            <button class="btn btn-lg btn-primary" id="btn-donate">立即投喂，支持 TA</button>
             <button class="btn btn-lg btn-gold" id="btn-share">📣 喊兄弟伙来瞅一哈</button>
             <button class="btn btn-lg btn-ghost hidden" id="btn-edit">✏️ 改一哈</button>
             <button class="btn btn-lg btn-ghost hidden" id="btn-manage-link">🔑 复制管理链接</button>
           </div>
+          <!-- V1.2：保留现有投喂流程；V1.3 将把快捷投喂下拉（菜品/饮料）替换进 .donate-quick 区域 -->
+          <div class="donate-quick" id="donate-quick" aria-hidden="true"></div>
         </div>
 
         <section class="records">

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 160" width="90" height="160">
+  <!-- 饭碗儿 V1.2 配套筷子：暖金棕（模块化资产，透明背景） -->
+  <g stroke="#b98d4f" stroke-width="5.5" stroke-linecap="round">
+    <line x1="30" y1="8" x2="18" y2="150"/>
+    <line x1="60" y1="8" x2="50" y2="150"/>
+  </g>
+  <g stroke="#a2763d" stroke-width="5.5" stroke-linecap="round" opacity="0.45">
+    <line x1="30" y1="118" x2="19" y2="150"/>
+    <line x1="60" y1="118" x2="51" y2="150"/>
+  </g>
+</svg>

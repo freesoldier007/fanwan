@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <!-- 饭碗儿 V1.2 主视觉：象牙白宽圆瓷碗 + 金棕描边 + 蓬松白米饭 + 金色小心心（透明背景） -->
+  <defs>
+    <linearGradient id="v12-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffdf6"/>
+      <stop offset="0.5" stop-color="#faf1dc"/>
+      <stop offset="1" stop-color="#f0e2c0"/>
+    </linearGradient>
+    <linearGradient id="v12-rice" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#fdf6e7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 大米饭堆：蓬松圆滚的白色米团（在碗身后沿之后） -->
+  <g>
+    <ellipse cx="120" cy="118" rx="66" ry="34" fill="url(#v12-rice)" stroke="#e8dcc2" stroke-width="2.5"/>
+    <ellipse cx="74" cy="128" rx="30" ry="20" fill="#fffdf8" stroke="#e8dcc2" stroke-width="2"/>
+    <ellipse cx="166" cy="128" rx="30" ry="20" fill="#fffdf8" stroke="#e8dcc2" stroke-width="2"/>
+    <ellipse cx="120" cy="136" rx="40" ry="22" fill="#fffef9" stroke="#eee3cb" stroke-width="1.8"/>
+    <!-- 米团之间的米色阴影 -->
+    <ellipse cx="96" cy="132" rx="16" ry="7" fill="#efe4c8" opacity="0.6"/>
+    <ellipse cx="146" cy="132" rx="16" ry="7" fill="#efe4c8" opacity="0.6"/>
+    <ellipse cx="120" cy="122" rx="12" ry="5" fill="#f4ead1" opacity="0.55"/>
+  </g>
+
+  <!-- 碗口：宽圆、金棕描边 -->
+  <ellipse cx="120" cy="150" rx="92" ry="33" fill="#fffdf6" stroke="#b98d4f" stroke-width="4.5"/>
+  <!-- 内壁深度 -->
+  <ellipse cx="120" cy="150" rx="82" ry="26" fill="none" stroke="#e6d4a8" stroke-width="6" opacity="0.55"/>
+
+  <!-- 碗身：宽圆奶油白瓷 -->
+  <path d="M28 152 Q120 220 212 152 L198 196 Q120 238 42 196 Z"
+        fill="url(#v12-body)" stroke="#b98d4f" stroke-width="5" stroke-linejoin="round"/>
+  <!-- 右侧体积阴影 -->
+  <path d="M152 168 Q186 174 194 196 Q166 212 136 208 Q152 190 152 168 Z" fill="#ecdcb4" opacity="0.75"/>
+  <!-- 左侧高光 -->
+  <path d="M52 170 Q66 194 92 206 Q72 208 58 198 Q50 184 52 170 Z" fill="#ffffff" opacity="0.55"/>
+
+  <!-- 碗足：小底座 -->
+  <ellipse cx="120" cy="225" rx="34" ry="7" fill="#f0e2c0" stroke="#b98d4f" stroke-width="3"/>
+
+  <!-- 金色小心心（碗身正面居中） -->
+  <path d="M120 214 c-9 -7 -16.5 -12 -16.5 -19.5 c0 -5.6 4.4 -10 10 -10 c2.7 0 5.1 1.3 6.5 3.4 c1.4 -2.1 3.8 -3.4 6.5 -3.4 c5.6 0 10 4.4 10 10 c0 7.5 -7.5 12.5 -16.5 19.5 z"
+        fill="#e8a33d" stroke="#c9891f" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- 金棕米粒点缀 -->
+  <g fill="#d9b878" opacity="0.9">
+    <ellipse cx="96" cy="120" rx="2.2" ry="1.2"/>
+    <ellipse cx="140" cy="116" rx="2.2" ry="1.2"/>
+    <ellipse cx="118" cy="112" rx="2" ry="1.1"/>
+    <ellipse cx="160" cy="126" rx="2" ry="1.1"/>
+    <ellipse cx="82" cy="128" rx="2" ry="1.1"/>
+  </g>
+</svg>

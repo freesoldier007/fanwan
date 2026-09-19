@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 160" width="60" height="160">
+  <!-- 饭碗儿 V1.2 配套瓷勺：奶油白 + 金棕描边（模块化资产，透明背景） -->
+  <defs>
+    <linearGradient id="sp-body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fffdf6"/>
+      <stop offset="1" stop-color="#f0e2c0"/>
+    </linearGradient>
+  </defs>
+  <!-- 勺柄 -->
+  <path d="M30 8 Q38 10 36 24 L30 96 Q29 102 30 108 L30 108 Q24 102 25 96 L28 24 Q27 10 30 8 Z"
+        fill="url(#sp-body)" stroke="#b98d4f" stroke-width="3" stroke-linejoin="round"/>
+  <!-- 勺头 -->
+  <ellipse cx="30" cy="124" rx="21" ry="26" fill="url(#sp-body)" stroke="#b98d4f" stroke-width="3.2"/>
+  <ellipse cx="30" cy="124" rx="13.5" ry="18" fill="#f4e9cf" opacity="0.85"/>
+  <!-- 柄部高光 -->
+  <path d="M27 16 Q26 40 27 84" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" fill="none" opacity="0.7"/>
+</svg>

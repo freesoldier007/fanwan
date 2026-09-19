@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>饭碗儿 —— 没得饭吃啷个办？先把饭碗儿摆出来嘛。</title>
-  <meta name="description" content="互联网人的在线饭碗儿。摆个饭碗儿，等个耿直人投一口。" />
+  <title>饭碗儿 Fanwan —— 轻众筹，一碗饭，一份希望</title>
+  <meta name="description" content="饭碗儿：用户自己发起的轻众筹。摆一个饭碗，讲出你的小目标，等耿直人投一口。轻众筹，一碗饭，一份希望。" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="__OG_TITLE__" />
   <meta property="og:description" content="__OG_DESC__" />
@@ -13,37 +13,65 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:url" content="__OG_URL__" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/style.css?v=v12-1" />
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="/">
-      <img src="/img/logo.svg" alt="饭碗儿 Logo" />
-      <span>饭碗儿<small>没得饭吃啷个办？先把饭碗儿摆出来嘛。</small></span>
+      <img src="/img/logo.svg" alt="饭碗儿品牌标识：一只冒着热气的奶油白瓷碗" />
+      <span class="brand-lockup">
+        <b>饭碗儿 <i>Fanwan</i></b>
+        <small>轻众筹，一碗饭，一份希望</small>
+      </span>
     </a>
     <nav class="nav">
-      <a class="btn btn-sm btn-ghost" href="/#bowls">👀 看哈哪个还在讨生活</a>
-      <a class="btn btn-sm btn-primary" href="/create.html">🍚 摆个饭碗儿</a>
+      <a class="btn btn-sm btn-ghost" href="/#bowls">👀 看看大家的饭碗</a>
+      <a class="btn btn-sm btn-primary" href="/create.html">发起饭碗</a>
     </nav>
   </header>
 
   <main>
-    <section class="hero">
-            <div class="hero-bowl-wrap">
-        <div class="steam" aria-hidden="true">
-          <span class="steam-1"></span>
-          <span class="steam-2"></span>
-          <span class="steam-3"></span>
+    <!-- V1.2 首屏：左文右碗 -->
+    <section class="hero hero-v12">
+      <div class="hero-deco" aria-hidden="true">
+        <img src="/img/watercolor.svg" alt="" />
+      </div>
+      <div class="hero-copy">
+        <h1>用一碗饭<br /><em>温暖更多人</em></h1>
+        <p class="brand-subtitle">轻众筹，一碗饭，一份希望</p>
+        <p class="hero-lede">
+          这里是大家自己发起的轻众筹：考研路上的一碗热饭、一套专业书、
+          给流浪猫添一口饭、毕业旅行去看看更大的世界——
+          摆出自己的饭碗，讲出你的心愿，每一份支持都会变成一碗热饭，陪 TA 走下去。
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-lg btn-primary" href="/create.html">发起饭碗</a>
+          <a class="btn btn-lg btn-ghost" href="#bowls">看看大家的饭碗</a>
         </div>
-        <img class="hero-bowl anim-settle" src="/img/bowl.svg" alt="一只摆起的饭碗" />
+        <p class="slogan" id="slogan"></p>
       </div>
-      <h1>没得饭吃啷个办？<br /><em>先把饭碗儿摆出来嘛。</em></h1>
-      <p class="sub">互联网这么大，总有个耿直人愿意请你吃口饭嘛。</p>
-      <div class="hero-actions">
-        <a class="btn btn-lg btn-primary" href="/create.html">🍚 摆个饭碗儿</a>
-        <a class="btn btn-lg" href="#bowls">👀 看哈哪个还在讨生活</a>
+
+      <div class="hero-art" aria-hidden="true">
+        <img class="hero-mountain" src="/img/watercolor.svg" alt="" />
+        <div class="hero-bowl-wrap">
+          <div class="steam" aria-hidden="true">
+            <span class="steam-1"></span>
+            <span class="steam-2"></span>
+            <span class="steam-3"></span>
+          </div>
+          <img class="hero-bowl anim-settle" src="/img/bowl-v12.svg" alt="盛着白米饭的奶油白瓷碗" />
+          <img class="hero-spoon" src="/img/spoon.svg" alt="" />
+          <img class="hero-chopsticks" src="/img/chopsticks.svg" alt="" />
+        </div>
+        <p class="hero-phrase"><span>一碗饭</span><span>一份希望</span></p>
       </div>
-      <p class="slogan" id="slogan"></p>
+    </section>
+
+    <!-- V1.2 数据条：全部来自真实接口 -->
+    <section class="stats-strip" aria-label="饭碗儿数据">
+      <div class="stat"><b id="stat-total">–</b><span>饭碗总数</span></div>
+      <div class="stat"><b id="stat-completed">–</b><span>已完成饭碗</span></div>
+      <div class="stat"><b id="stat-active">–</b><span>正在进行中</span></div>
     </section>
 
     <section id="bowls">
@@ -53,11 +81,19 @@
         <img src="/img/bowl.svg" alt="空碗" />
         <h2>还没得哪个来喂……</h2>
         <p>莫慌，饭碗儿都摆起了，总会有人路过。</p>
-        <a class="btn btn-primary" href="/create.html">🍚 我先摆一个</a>
+        <a class="btn btn-primary" href="/create.html">发起饭碗</a>
       </div>
       <div id="load-more" class="hidden" style="text-align:center; margin-top:26px;">
         <button class="btn btn-gold" id="load-more-btn">再看一哈还有莫得</button>
       </div>
+    </section>
+
+    <!-- V1.2 信任条：只说产品当前真实做到的 -->
+    <section class="trust-strip" aria-label="饭碗儿的承诺">
+      <div class="trust-item"><span class="trust-ico">🍚</span><b>真实透明</b><small>饭碗公开进度，投喂记录大家看得到</small></div>
+      <div class="trust-item"><span class="trust-ico">🤝</span><b>直接送达</b><small>饭钱不经过平台，直接到摆碗人手里</small></div>
+      <div class="trust-item"><span class="trust-ico">✨</span><b>简单参与</b><small>选一个饭碗，投一口，就是支持</small></div>
+      <div class="trust-item"><span class="trust-ico">🌱</span><b>传递希望</b><small>一碗饭的心意，陪每个小目标走下去</small></div>
     </section>
   </main>
 
@@ -67,7 +103,7 @@
     <p>我们只负责记到：哪个兄弟伙，今天有人投过饭。</p>
   </footer>
 
-    <script src="/js/api.js?v=20260918-1"></script>
-  <script src="/js/index.js?v=20260918-1"></script>
+    <script src="/js/api.js?v=v12-1"></script>
+  <script src="/js/index.js?v=v12-1"></script>
 </body>
 </html>

@@ -57,6 +57,28 @@
   let total = 0;
   const pageSize = 9;
 
+  /* ---------- V1.2 数据条：只用真实接口数据，拿不到的指标不编数字 ---------- */
+  async function loadStats() {
+    const totalEl = $("#stat-total"), completed = $("#stat-completed"), active = $("#stat-active");
+    if (!totalEl || !completed || !active) return;
+    try {
+      // 复用现有列表接口的 total 字段，无需新后端
+      const [allRes, doneRes, actRes] = await Promise.all([
+        get("/api/bowl?status=all&page=1&pageSize=1"),
+        get("/api/bowl?status=completed&page=1&pageSize=1"),
+        get("/api/bowl?status=active&page=1&pageSize=1"),
+      ]);
+      totalEl.textContent = String(allRes.total || 0);
+      completed.textContent = String(doneRes.total || 0);
+      active.textContent = String(actRes.total || 0);
+    } catch {
+      totalEl.textContent = "–";
+      completed.textContent = "–";
+      active.textContent = "–";
+    }
+  }
+  loadStats();
+
   async function load(reset = false) {
     if (reset) { page = 1; $("#bowl-list").innerHTML = ""; }
     const box = $("#bowl-list");
@@ -105,6 +127,7 @@
     const el = document.createElement("a");
     el.className = "bowl-card";
     el.href = `/${b.slug}`;
+    const wantTxt = (b.want || "").trim();
     el.innerHTML = `
       <div class="row">
         ${b.avatarUrl
@@ -113,14 +136,15 @@
         <h3>${escapeHtml(b.title)}</h3>
         <span class="status-tag">${statusTxt}</span>
       </div>
-      <div class="meta"><b style="color:var(--gold-deep)">${mealState(pct)}</b> · ¥${yuan(b.currentYuan)} / ¥${yuan(b.targetYuan)} · ${deadlineTxt}</div>
+      ${wantTxt ? `<p class="card-want">${escapeHtml(wantTxt)}</p>` : ""}
       <div class="progress">
         <div class="fill ${pct >= 100 ? "full" : ""}" style="width:${pct}%"></div>
         <span class="pct">${pct}%</span>
       </div>
+      <div class="meta"><b style="color:var(--gold-deep)">${mealState(pct)}</b> · ¥${yuan(b.currentYuan)} / ¥${yuan(b.targetYuan)}</div>
       <div class="foot">
         <span class="who">👨‍💻 ${b.donorCount || 0} 个耿直人投过</span>
-        <span style="color:var(--gold-deep); font-weight:700;">进去瞅一哈 →</span>
+        <span class="card-cta">去投喂 →</span>
       </div>
     `;
     $("#bowl-list").appendChild(el);
