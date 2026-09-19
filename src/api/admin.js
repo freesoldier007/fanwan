@@ -153,8 +153,20 @@ export async function deleteItem(request, env) {
       ...(row.status === "approved"
         ? [
             env.DB.prepare(
-              "UPDATE bowls SET current_cents = MAX(0, current_cents - ?) WHERE id=?"
-            ).bind(row.cny_equiv_cents ?? row.amount_cents, row.bowl_id),
+              `UPDATE bowls
+               SET current_cents = MAX(0, current_cents - ?),
+                   status = CASE
+                     WHEN MAX(0, current_cents - ?) >= target_cents THEN 'completed'
+                     WHEN deadline IS NOT NULL AND deadline < datetime('now') THEN 'expired'
+                     ELSE 'active'
+                   END,
+                   updated_at = datetime('now')
+               WHERE id=?`
+            ).bind(
+              row.cny_equiv_cents ?? row.amount_cents,
+              row.cny_equiv_cents ?? row.amount_cents,
+              row.bowl_id
+            ),
           ]
         : []),
     ]);
