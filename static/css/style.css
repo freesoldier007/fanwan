@@ -555,6 +555,119 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
 .detail-rice-new { opacity: 0; transform-box: fill-box; transform-origin: center; animation: detailRiceDrop .45s ease-out forwards; }
 @keyframes detailRiceDrop { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: translateY(0); } }
 
+/* ---------- 四段碗状态 + 满碗庆祝（V1 gamification） ---------- */
+.stage-pill {
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  transform: translateX(-50%);
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  z-index: 3;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.detail-bowl-progress::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 等待添饭：空碗略淡，安静的待机 */
+.stage-empty .detail-bowl-img { opacity: 0.85; filter: saturate(0.8); }
+
+/* 正在添饭：有几口饭了 */
+.stage-filling .detail-rice-layer { opacity: 0.92; }
+
+/* 快盛满了：饭满起来，碗微倾 */
+.stage-hearty .detail-rice-layer { opacity: 1; }
+.stage-hearty .detail-bowl-img { transform: rotate(-1.5deg); }
+
+/* 就差最后一勺：暖光提示 */
+.stage-almost .detail-rice-layer { opacity: 1; }
+.stage-almost::before {
+  opacity: 1;
+  background: radial-gradient(circle, rgba(232,163,61,0) 52%, rgba(232,163,61,0.28) 78%, rgba(232,163,61,0) 100%);
+}
+
+/* 饭碗已盛满：温暖光晕 + 绿色阶段签（静态常驻，不闪不躁） */
+.stage-full .detail-rice-layer { opacity: 1; }
+.stage-full::before {
+  opacity: 1;
+  background: radial-gradient(circle, rgba(111,154,78,0.20) 30%, rgba(232,163,61,0.26) 62%, rgba(232,163,61,0) 78%);
+}
+.stage-full .stage-pill { color: #4c7031; border-color: var(--green); background: #f3f7ee; }
+
+/* 庆祝层：只有 celebrate-on 期间才动，结束后自动收场，不循环 */
+.celebrate-layer { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.celebrate-layer .steam {
+  position: absolute;
+  left: 50%;
+  bottom: 62%;
+  width: 7px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(255, 253, 246, 0.9);
+  border: 1.5px solid rgba(217, 195, 159, 0.65);
+  opacity: 0;
+  transform: translateX(-50%);
+}
+.celebrate-layer .steam.s1 { margin-left: -16px; }
+.celebrate-layer .steam.s2 { margin-left: 0; height: 22px; }
+.celebrate-layer .steam.s3 { margin-left: 16px; }
+.celebrate-layer .spark {
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  font-size: 13px;
+  color: var(--gold-deep);
+  opacity: 0;
+  transform: translate(calc(-50% + var(--sx, 0px)), var(--sy, 0px)) scale(0.4);
+}
+.celebrate-layer.celebrate-on .steam { animation: bowlSteam 2.2s ease-out forwards; }
+.celebrate-layer.celebrate-on .steam.s2 { animation-delay: 0.15s; }
+.celebrate-layer.celebrate-on .steam.s3 { animation-delay: 0.3s; }
+.celebrate-layer.celebrate-on .spark { animation: bowlSpark 1.8s ease-out forwards; }
+.celebrate-layer.celebrate-on .spark:nth-of-type(5) { animation-delay: 0.12s; }
+.celebrate-layer.celebrate-on .spark:nth-of-type(6) { animation-delay: 0.24s; }
+.celebrate-layer.celebrate-on .spark:nth-of-type(7) { animation-delay: 0.36s; }
+.celebrate-layer.celebrate-on .spark:nth-of-type(8) { animation-delay: 0.18s; }
+.celebrate-layer.celebrate-on .spark:nth-of-type(9) { animation-delay: 0.4s; }
+.detail-bowl-progress:has(.celebrate-on) .detail-bowl-img { animation: bowlPopOnce 0.6s ease-out; }
+
+@keyframes bowlSteam {
+  0% { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.7); }
+  25% { opacity: 0.85; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-26px) scale(1.05); }
+}
+@keyframes bowlSpark {
+  0% { opacity: 0; transform: translate(calc(-50% + var(--sx, 0px)), var(--sy, 0px)) scale(0.3) rotate(0deg); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--sx, 0px) * 1.5), calc(var(--sy, 0px) - 14px)) scale(1.1) rotate(22deg); }
+}
+@keyframes bowlPopOnce { 0% { transform: scale(1); } 40% { transform: scale(1.05) rotate(-1deg); } 100% { transform: scale(1); } }
+
+/* 减少动效：满碗只给静态呈现，蒸汽/星光/弹跳全部关掉 */
+@media (prefers-reduced-motion: reduce) {
+  .celebrate-layer { display: none; }
+  .detail-bowl-progress:has(.celebrate-on) .detail-bowl-img { animation: none; }
+}
+
+@media (max-width: 640px) {
+  .stage-pill { font-size: 10px; padding: 2px 7px; }
+}
+
 .detail-title { font-size: clamp(24px, 4vw, 32px); font-weight: 800; line-height: 1.4; }
 
 .detail-amount { font-size: 19px; color: var(--ink-soft); margin: 8px 0 4px; }
@@ -578,6 +691,15 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
 .detail-progress { margin: 22px 0; position: relative; z-index: 1; }
 .detail-progress .progress { height: 34px; }
 .detail-progress .pct { font-size: 15px; }
+
+/* 90%–99%：还差最后一勺的金额提示 */
+.stage-remaining {
+  margin: 2px 0 0;
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--gold-deep);
+}
 
 .detail-desc { margin: 20px 0; position: relative; z-index: 1; }
 
