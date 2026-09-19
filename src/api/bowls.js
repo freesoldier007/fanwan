@@ -32,10 +32,16 @@ export async function listBowls(request, env) {
     Math.max(1, parseInt(url.searchParams.get("pageSize") || "10", 10) || 10)
   );
 
-  // 懒更新：先把过期的饭碗儿标记为 expired
+  // 懒更新：达到目标优先标记为 completed，否则过期才标记为 expired
   await env.DB.prepare(
-    `UPDATE bowls SET status='expired', updated_at=datetime('now')
-     WHERE status='active' AND deadline IS NOT NULL AND deadline < datetime('now')`
+    `UPDATE bowls
+     SET status = CASE
+       WHEN current_cents >= target_cents THEN 'completed'
+       WHEN deadline IS NOT NULL AND deadline < datetime('now') THEN 'expired'
+     END,
+     updated_at = datetime('now')
+     WHERE status = 'active'
+       AND (current_cents >= target_cents OR (deadline IS NOT NULL AND deadline < datetime('now')))`
   ).run();
 
   const where = status === "all" ? "" : "WHERE status = ?";
