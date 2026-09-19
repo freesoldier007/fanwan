@@ -551,6 +551,15 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
 
 .detail-bowl-progress { position: relative; width: 110px; flex: none; filter: drop-shadow(0 10px 14px rgba(173,141,94,.25)); }
 .detail-bowl-progress .detail-bowl-img { display: block; width: 100%; height: auto; filter: none; }
+
+/* 阶段标签：改走文档流，永远在碗正下方（碗→6px 空隙→标签），不再盖住碗 */
+.detail-bowl-progress .stage-pill {
+  position: static;
+  display: block;
+  width: fit-content;
+  margin: 6px auto 0;
+  transform: none;
+}
 .detail-rice-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .detail-rice-new { opacity: 0; transform-box: fill-box; transform-origin: center; animation: detailRiceDrop .45s ease-out forwards; }
 @keyframes detailRiceDrop { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: translateY(0); } }
