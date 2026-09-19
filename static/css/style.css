@@ -132,7 +132,7 @@ img { max-width: 100%; }
 .btn-ghost { background: transparent; box-shadow: none; }
 .btn-ghost:hover { background: rgba(217, 195, 159, 0.18); box-shadow: none; }
 
-.btn-lg { font-size: 19px; padding: 14px 32px; }
+.btn-lg { font-size: 17.5px; padding: 12px 28px; }
 .btn-sm { font-size: 14px; padding: 7px 16px; }
 .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
@@ -1341,34 +1341,61 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
 /* ---------- V1.2 首屏：左文右碗 ---------- */
 .hero-v12 {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-areas: "head art" "tail art";
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+  grid-template-rows: auto 1fr;
   align-items: center;
-  gap: 40px;
-  padding: 56px 0 8px;
+  column-gap: 44px;
+  padding: 52px 0 8px;
   text-align: left;
   position: relative;
 }
 
+/* 移动端：标题 → 碗艺 → 短文案+CTA（碗必须出现在首屏） */
+@media (max-width: 900px) {
+  .hero-v12 {
+    grid-template-areas: "head" "art" "tail";
+    grid-template-columns: 1fr;
+    padding-top: 30px;
+  }
+}
+
+.hero-head { grid-area: head; position: relative; z-index: 1; }
+.hero-tail { grid-area: tail; position: relative; z-index: 1; }
+.hero-head, .hero-tail { text-align: inherit; }
+
+.hero-head h1 {
+  font-size: clamp(30px, 4.6vw, 50px);
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1.32;
+  margin: 0;
+}
+.hero-head h1 em { font-style: normal; color: var(--cta-red); }
+
+.hero-lede {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: clamp(13.5px, 1.6vw, 15px);
+  line-height: 1.85;
+  max-width: 30em;
+}
+
+.hero-v12 .hero-actions { margin-top: 18px; justify-content: flex-start; }
+.hero-v12 .slogan { margin: 14px 0 0; text-align: left; }
+
 .hero-deco {
   position: absolute;
   left: 50%;
-  bottom: -30px;
+  bottom: -20px;
   transform: translateX(-50%);
   width: min(1100px, 100vw);
   pointer-events: none;
   z-index: 0;
 }
-.hero-deco img { width: 100%; height: auto; opacity: 0.6; display: block; }
+.hero-deco img { width: 100%; height: auto; opacity: 0.8; display: block; }
 
-.hero-copy { position: relative; z-index: 1; }
-.hero-copy h1 {
-  font-size: clamp(34px, 5vw, 56px);
-  font-weight: 800;
-  letter-spacing: 2px;
-  line-height: 1.3;
-  margin: 0;
-}
-.hero-copy h1 em { font-style: normal; color: var(--cta-red); }
+/* 旧 hero-copy 结构已被 hero-head/hero-tail 替代 */
 
 .brand-subtitle {
   margin: 14px 0 0;
@@ -1378,32 +1405,23 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
   letter-spacing: 3px;
 }
 
-.hero-lede {
-  margin: 16px 0 0;
-  color: var(--ink-soft);
-  font-size: clamp(14.5px, 1.8vw, 16.5px);
-  line-height: 1.9;
-  max-width: 34em;
-}
+/* （hero-lede / hero-actions / slogan 已移至上方三区结构段） */
 
-.hero-v12 .hero-actions { margin-top: 26px; justify-content: flex-start; }
-.hero-v12 .slogan { margin: 22px 0 0; text-align: left; }
-
-/* 碗艺术组合：碗 + 勺 + 筷 + 手写短语 */
-.hero-art { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
+/* 碗艺术组合：碗 + 勺 + 筷 + 手写短语（首屏主视觉，移动端不隐藏） */
+.hero-art { grid-area: art; position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
 .hero-art .hero-mountain {
   position: absolute;
-  bottom: -56px;
+  bottom: -46px;
   left: 50%;
   transform: translateX(-50%);
-  width: 150%;
-  max-width: none;
-  opacity: 0.5;
+  width: 100%;
+  max-width: 100%;
+  opacity: 0.75;
   pointer-events: none;
 }
 .hero-bowl-wrap {
   position: relative;
-  width: min(300px, 64vw);
+  width: min(360px, 74vw);
   margin: 10px auto 0;
 }
 .hero-bowl-wrap .hero-bowl {
@@ -1517,25 +1535,32 @@ filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.75));
 
 /* ---------- V1.2 移动端 ---------- */
 @media (max-width: 900px) {
-  .hero-v12 { grid-template-columns: 1fr; gap: 8px; padding-top: 36px; }
-  .hero-copy { text-align: center; }
-  .hero-lede { margin-left: auto; margin-right: auto; }
+  .hero-head, .hero-tail { text-align: center; }
+  .hero-head h1 { margin-inline: auto; }
+  .hero-lede { margin-inline: auto; }
   .hero-v12 .hero-actions { justify-content: center; }
   .hero-v12 .slogan { text-align: center; }
-  .hero-art { margin-top: 20px; }
+  .hero-art { margin-top: 18px; }
   .hero-phrase { justify-content: center; }
   .trust-strip { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 640px) {
-  .brand img { width: 38px; height: 38px; }
-  .brand-lockup b { font-size: 16px; }
-  .brand-lockup small { font-size: 9.5px; letter-spacing: 1px; }
+  /* 品牌区：清晰可读但不喧宾夺主 */
+  .brand { gap: 9px; }
+  .brand img { width: 44px; height: 44px; }
+  .brand-lockup { gap: 2px; }
+  .brand-lockup b { font-size: 17px; }
+  .brand-lockup small { font-size: 10px; letter-spacing: 1.5px; }
   .nav .btn-ghost { display: none; } /* 空间紧张时收起次级入口，主导航目标全部保留 */
-  .hero-v12 { padding-top: 28px; }
-  .hero-bowl-wrap { width: min(220px, 58vw); }
-  .hero-spoon { left: -9%; width: 19%; }
-  .hero-chopsticks { right: -10%; width: 28%; }
-  .hero-phrase { font-size: 15px; letter-spacing: 4px; gap: 12px; margin-top: 12px; }
+  .hero-v12 { padding-top: 22px; column-gap: 0; }
+  /* 碗艺是第一屏主视觉：移动端不缩小、不隐藏 */
+  .hero-bowl-wrap { width: min(330px, 82vw); }
+  .hero-spoon { left: -5%; width: 18%; }
+  .hero-chopsticks { right: -4%; width: 26%; }
+  .hero-phrase { font-size: 15px; letter-spacing: 4px; gap: 12px; margin-top: 10px; }
+  .hero-lede { font-size: 13.5px; line-height: 1.75; max-width: 24em; }
+  .hero-v12 .hero-actions { margin-top: 16px; }
+  .btn-lg { font-size: 16.5px; padding: 12px 26px; } /* 主 CTA 醒目但不 oversized */
   .stats-strip { gap: 20px; padding: 16px 14px; margin-top: 30px; }
   .stats-strip .stat b { font-size: 22px; }
   .stats-strip .stat span { font-size: 11.5px; }
