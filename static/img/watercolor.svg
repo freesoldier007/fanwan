@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="1200" height="320" preserveAspectRatio="xMidYMax slice">
+  <!-- 江南水墨远山：极淡暖色装饰（透明背景，不压文字） -->
+  <defs>
+    <linearGradient id="wc-a" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d9c39a" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#d9c39a" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="wc-b" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8a33d" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#e8a33d" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="wc-c" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b98d4f" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#b98d4f" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 远山 -->
+  <path d="M0 250 Q120 170 240 235 Q330 280 420 232 Q520 180 640 238 Q760 292 880 234 Q990 184 1080 232 Q1140 258 1200 240 L1200 320 L0 320 Z" fill="url(#wc-a)"/>
+  <!-- 中景山 -->
+  <path d="M60 282 Q180 205 300 268 Q420 322 560 268 Q700 214 830 270 Q950 320 1050 272 Q1130 238 1200 278 L1200 320 L0 320 Z" fill="url(#wc-b)"/>
+  <!-- 近景丘 -->
+  <path d="M0 300 Q160 252 320 292 Q520 336 720 296 Q900 262 1040 300 Q1120 318 1200 302 L1200 320 L0 320 Z" fill="url(#wc-c)"/>
+  <!-- 淡墨晕染 -->
+  <ellipse cx="300" cy="252" rx="150" ry="26" fill="#d9c39a" opacity="0.10"/>
+  <ellipse cx="820" cy="240" rx="180" ry="30" fill="#e8a33d" opacity="0.08"/>
+</svg>

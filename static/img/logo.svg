@@ -1,30 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
-  <!-- 饭碗儿 Logo：一只碗 + 两粒米饭 + 筷子 + 小辣椒 -->
+  <!-- 饭碗儿 V1.2 品牌标识：奶油白瓷碗 + 金棕描边 + 白米饭 + 金色小心心 -->
   <defs>
-    <linearGradient id="bowlShade" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="lg-body" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#fffdf6"/>
-      <stop offset="1" stop-color="#f3e7c8"/>
+      <stop offset="1" stop-color="#f0e2c0"/>
     </linearGradient>
   </defs>
+
   <!-- 桌面阴影 -->
-  <ellipse cx="48" cy="80" rx="36" ry="9" fill="#ecd9b0"/>
-  <!-- 碗身 -->
-  <path d="M14 62 Q48 86 82 62 L78 78 Q48 96 18 78 Z" fill="#faf4e6" stroke="#d9c39a" stroke-width="3"/>
-  <path d="M18 78 Q48 96 78 78 Q48 86 18 78 Z" fill="#e8d3ab"/>
+  <ellipse cx="48" cy="86" rx="34" ry="6.5" fill="#ecd9b0" opacity="0.8"/>
+
+  <!-- 碗足 -->
+  <ellipse cx="48" cy="82" rx="14" ry="4" fill="#f0e2c0" stroke="#b98d4f" stroke-width="2"/>
+
+  <!-- 碗身：宽圆奶油白瓷 + 金棕描边 -->
+  <path d="M10 50 Q48 78 86 50 L79 72 Q48 88 17 72 Z"
+        fill="url(#lg-body)" stroke="#b98d4f" stroke-width="3.2" stroke-linejoin="round"/>
+  <!-- 体积阴影 / 高光 -->
+  <path d="M62 58 Q74 60 78 68 Q68 74 56 72 Q63 65 62 58 Z" fill="#ecdcb4" opacity="0.7"/>
+  <path d="M22 60 Q30 70 40 74 Q30 74 24 69 Q21 64 22 60 Z" fill="#ffffff" opacity="0.5"/>
+
   <!-- 碗口 -->
-  <ellipse cx="48" cy="60" rx="34" ry="14" fill="url(#bowlShade)" stroke="#d9c39a" stroke-width="2.5"/>
-  <!-- 米饭 -->
-  <g fill="#f6e8c8" stroke="#e8d3ab" stroke-width="1">
-    <ellipse cx="38" cy="57" rx="6.5" ry="4"/>
-    <ellipse cx="50" cy="54" rx="6.5" ry="4"/>
-    <ellipse cx="58" cy="59" rx="6.5" ry="4"/>
+  <ellipse cx="48" cy="50" rx="38" ry="13" fill="#fffdf6" stroke="#b98d4f" stroke-width="2.8"/>
+  <ellipse cx="48" cy="50" rx="32" ry="9.5" fill="none" stroke="#e6d4a8" stroke-width="4" opacity="0.5"/>
+
+  <!-- 白米饭：蓬松圆堆 -->
+  <g fill="#fffdf8" stroke="#e8dcc2" stroke-width="1">
+    <ellipse cx="32" cy="47" rx="9" ry="5"/>
+    <ellipse cx="48" cy="44" rx="10" ry="5.5"/>
+    <ellipse cx="64" cy="47" rx="9" ry="5"/>
+    <ellipse cx="40" cy="51" rx="8" ry="4.5" fill="#fffdf4"/>
+    <ellipse cx="57" cy="51" rx="8" ry="4.5" fill="#fffdf4"/>
   </g>
-  <!-- 筷子 -->
-  <g stroke="#b98d4f" stroke-width="4" stroke-linecap="round">
-    <line x1="64" y1="24" x2="70" y2="40"/>
-    <line x1="74" y1="26" x2="80" y2="42"/>
+  <!-- 米粒暖金点缀 -->
+  <g fill="#e8c98f" opacity="0.85">
+    <ellipse cx="44" cy="46" rx="1.6" ry="0.9"/>
+    <ellipse cx="58" cy="49" rx="1.6" ry="0.9"/>
+    <ellipse cx="34" cy="50" rx="1.4" ry="0.8"/>
   </g>
-  <!-- 小辣椒 -->
-  <path d="M20 26 q7 -16 16 -6 q-2 10 -11 12 Z" fill="#e23a3a"/>
-  <path d="M26 31 q2 8 -3 12" stroke="#c02626" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- 金色小心心（碗身正面） -->
+  <path d="M48 72.5 c-3.4 -2.6 -6.1 -4.5 -6.1 -7.3 c0 -2.1 1.6 -3.8 3.7 -3.8 c1 0 2 0.5 2.4 1.3 c0.5 -0.8 1.4 -1.3 2.4 -1.3 c2.1 0 3.7 1.7 3.7 3.8 c0 2.8 -2.7 4.7 -6.1 7.3 z"
+        fill="#e8a33d" stroke="#c9891f" stroke-width="1.2" stroke-linejoin="round"/>
 </svg>
